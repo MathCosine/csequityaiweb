@@ -151,6 +151,7 @@
         var idx = Array.prototype.indexOf.call(pathSteps, e.target);
         bigNums.forEach(function (n, i) { n.classList.toggle("on", i === idx); });
         names.forEach(function (n, i) { n.classList.toggle("on", i === idx); });
+        pathSteps.forEach(function (s, i) { s.classList.toggle("active", i === idx); });
       });
     }, { rootMargin: "-40% 0px -50% 0px" });
     pathSteps.forEach(function (s) { stepObs.observe(s); });

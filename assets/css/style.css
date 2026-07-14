@@ -648,3 +648,119 @@ footer ul a:hover { color: var(--ink); }
 
 /* parallax helper */
 [data-parallax] { will-change: transform; }
+
+/* ============================================================
+   Polish pass — global refinements
+   ============================================================ */
+
+/* soft corner radius on all bordered surfaces */
+.split, .dates, .give, .work, .evt .thumb, .member .photo,
+.event-body img.figure, .faq-item { border-radius: 4px; }
+.dates { overflow: hidden; }
+.split { overflow: hidden; }
+.give { overflow: hidden; }
+
+/* anchors land below the fixed nav */
+section[id] { scroll-margin-top: 110px; }
+
+/* visible keyboard focus */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 3px;
+}
+
+/* announcement bar: hairline gradient base */
+.announce { position: relative; }
+.announce::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  opacity: 0.55;
+}
+
+/* page heads get the hero's graph grid */
+.page-head::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(16, 29, 41, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 29, 41, 0.04) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 85% 90% at 40% 20%, black 25%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 90% at 40% 20%, black 25%, transparent 75%);
+}
+.page-head .wrap { position: relative; z-index: 1; }
+
+/* ticker separators quieter */
+.ticker span::after { opacity: 0.6; }
+
+/* path: current step lit, others receded */
+.path-step { transition: opacity 0.5s ease; opacity: 0.38; }
+.path-step.active { opacity: 1; }
+@media (max-width: 880px) { .path-step { opacity: 1; } }
+
+/* works rail: edge fade so it reads as scrollable */
+.works-rail-wrap { position: relative; }
+.works-rail-wrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 90px;
+  background: linear-gradient(to right, transparent, var(--paper));
+  pointer-events: none;
+}
+.section.tint .works-rail-wrap::after {
+  background: linear-gradient(to right, transparent, var(--paper-2));
+}
+.work .no { border-bottom: 1px solid var(--hair); display: block; padding-bottom: 10px; }
+
+/* quote band ornament + texture */
+.quote-band { position: relative; overflow: hidden; }
+.quote-band::before {
+  content: "\201C"; position: absolute; top: -0.28em; right: 4%;
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(16rem, 30vw, 26rem); line-height: 1;
+  color: rgba(255, 255, 255, 0.045); pointer-events: none;
+}
+.quote-band .wrap { position: relative; }
+
+/* endcap: soft glow behind headline */
+.endcap::before {
+  content: ""; position: absolute; right: -12%; top: -30%;
+  width: 55vw; height: 55vw; border-radius: 50%;
+  background: radial-gradient(circle, rgba(78, 163, 221, 0.14), rgba(92, 191, 155, 0.1) 45%, transparent 68%);
+  filter: blur(50px); pointer-events: none;
+}
+.endcap .wrap { position: relative; }
+
+/* footer: link hover nudges, back-to-top */
+footer ul a { display: inline-block; transition: transform 0.25s var(--ease-out), color 0.2s; }
+footer ul a:hover { transform: translateX(4px); }
+.footer-bottom .top {
+  color: var(--ink-2); border-bottom: 1px solid transparent; margin-left: 18px;
+}
+.footer-bottom .top:hover { color: var(--ink); border-color: var(--ink-2); }
+
+/* event rows: title underline sweep on hover */
+.evt h3 { display: inline-block; background-image: linear-gradient(var(--ink), var(--ink));
+  background-repeat: no-repeat; background-size: 0% 1px; background-position: 0 100%;
+  transition: background-size 0.4s var(--ease-out); padding-bottom: 3px; }
+.evt:hover h3 { background-size: 100% 1px; }
+
+/* tags: tiny lift on hover inside interactive rows */
+.tag { transition: border-color 0.25s; }
+
+/* team roles in blue for variety against green units elsewhere */
+.member .role { letter-spacing: 0.2em; }
+
+/* smoother img rendering during tilt */
+.member .photo { border-radius: 4px; }
+.member .photo img { transform-origin: center; }
+
+/* nav cta: keep label legible over gradient sweep */
+.nav .btn.sm > span { white-space: nowrap; }
+
+/* selection color on dark band */
+.quote-band ::selection { background: rgba(92, 191, 155, 0.4); }
+
+/* horizontal rules inside event bodies breathe more */
+.event-body h2 { margin-top: 56px; }
+
+/* mobile: hero net-viz slightly smaller, centered */
+@media (max-width: 880px) {
+  .net-viz { max-width: 380px; margin: 0 auto 24px; }
+}
