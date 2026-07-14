@@ -5,9 +5,9 @@
    ============================================================ */
 
 :root {
-  --paper: #fcfcfa;
-  --paper-2: #f4f6f3;
-  --ink: #14202b;
+  --paper: #faf9f4;
+  --paper-2: #eff3ee;
+  --ink: #101d29;
   --ink-2: #4c5c68;
   --ink-3: #7d8b95;
   --blue: #0e6fb8;
@@ -35,6 +35,13 @@ body {
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 ::selection { background: #d5e9f7; }
+
+/* film-grain texture over everything, extremely faint */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 500;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 
 h1, h2, h3 { font-family: var(--serif); font-weight: 500; line-height: 1.06; letter-spacing: -0.015em; }
 h4, h5 { font-family: var(--sans); }
@@ -68,21 +75,28 @@ h4, h5 { font-family: var(--sans); }
 @media (hover: none), (pointer: coarse) { .cursor-dot, .cursor-ring { display: none; } }
 
 /* ============ kinetic type (split lines) ============ */
-.kin .w { display: inline-block; overflow: hidden; vertical-align: bottom; }
+/* padding + negative margin keeps descenders and italic overhangs
+   inside the clip mask instead of being cut off */
+.kin .w {
+  display: inline-block; overflow: hidden; vertical-align: bottom;
+  padding: 0.1em 0.1em 0.22em; margin: -0.1em -0.1em -0.22em;
+}
 .kin .wi {
   display: inline-block;
-  transform: translateY(115%) rotate(2.5deg);
-  transition: transform 0.9s var(--ease-out);
+  transform: translate3d(0, 118%, 0);
+  transition: transform 1.05s var(--ease-out);
+  will-change: transform;
+  backface-visibility: hidden;
 }
-.kin.go .wi { transform: none; }
+.kin.go .wi { transform: translate3d(0, 0, 0); }
 
 /* reveal primitives */
-.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.8s ease, transform 0.8s var(--ease-out); }
-.reveal.visible { opacity: 1; transform: none; }
-.reveal-blur { opacity: 0; filter: blur(6px); transform: translateY(14px); transition: opacity 0.9s ease, filter 0.9s ease, transform 0.9s var(--ease-out); }
-.reveal-blur.visible { opacity: 1; filter: blur(0); transform: none; }
-.stagger > * { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s var(--ease-out); }
-.stagger.visible > * { opacity: 1; transform: none; }
+.reveal { opacity: 0; transform: translate3d(0, 26px, 0); transition: opacity 0.9s ease, transform 0.9s var(--ease-out); will-change: opacity, transform; }
+.reveal.visible { opacity: 1; transform: translate3d(0, 0, 0); }
+.reveal-blur { opacity: 0; filter: blur(6px); transform: translate3d(0, 14px, 0); transition: opacity 1s ease, filter 1s ease, transform 1s var(--ease-out); }
+.reveal-blur.visible { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); }
+.stagger > * { opacity: 0; transform: translate3d(0, 24px, 0); transition: opacity 0.8s ease, transform 0.8s var(--ease-out); will-change: opacity, transform; }
+.stagger.visible > * { opacity: 1; transform: translate3d(0, 0, 0); }
 
 /* ============ label ============ */
 .label {
@@ -133,7 +147,7 @@ h4, h5 { font-family: var(--sans); }
 /* ============ nav ============ */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(252, 252, 250, 0.9);
+  background: rgba(250, 249, 244, 0.9);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--hair);
   transition: transform 0.4s var(--ease-out);
@@ -196,6 +210,16 @@ h4, h5 { font-family: var(--sans); }
   display: flex; flex-direction: column; justify-content: center;
   padding: clamp(50px, 7vh, 90px) 0 0;
   overflow: hidden;
+}
+/* faint graph-paper grid behind the hero */
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(16, 29, 41, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 29, 41, 0.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 30%, transparent 78%);
 }
 .aurora {
   position: absolute; inset: -10%; pointer-events: none; z-index: 0;
@@ -378,7 +402,7 @@ h4, h5 { font-family: var(--sans); }
 .work {
   flex: 0 0 clamp(260px, 30vw, 360px);
   scroll-snap-align: start;
-  border: 1px solid var(--hair); background: #fff;
+  border: 1px solid var(--hair); background: #fffefb;
   padding: 26px 26px 24px;
   display: flex; flex-direction: column; min-height: 240px;
   transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease, border-color 0.3s;
@@ -400,7 +424,7 @@ h4, h5 { font-family: var(--sans); }
 .rail-nav button:active { transform: scale(0.9); }
 
 /* ============ split panels & dates ============ */
-.split { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--hair); background: #fff; }
+.split { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--hair); background: #fffefb; }
 .split > div { padding: clamp(30px, 4vw, 50px); position: relative; overflow: hidden; }
 .split > div + div { border-left: 1px solid var(--hair); }
 .split h3 { font-size: 1.6rem; margin: 16px 0 12px; }
@@ -533,7 +557,7 @@ footer ul a:hover { color: var(--ink); }
 .evt:last-of-type { border-bottom: 1px solid var(--hair); }
 .evt .when { font-size: 0.85rem; color: var(--ink-2); }
 .evt .when .y { font-family: var(--serif); font-size: 1.8rem; color: var(--ink); display: block; margin-bottom: 6px; }
-.evt .thumb { border: 1px solid var(--hair); overflow: hidden; aspect-ratio: 16/10; background: #fff; }
+.evt .thumb { border: 1px solid var(--hair); overflow: hidden; aspect-ratio: 16/10; background: #fffefb; }
 .evt .thumb img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85); transition: filter 0.4s, transform 0.7s var(--ease-out); }
 .evt:hover .thumb img { filter: saturate(1); transform: scale(1.04); }
 .evt .thumb .ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
@@ -594,7 +618,7 @@ footer ul a:hover { color: var(--ink); }
 .partners { display: flex; flex-wrap: wrap; gap: 12px 34px; align-items: baseline; }
 .partners span { font-family: var(--serif); font-style: italic; font-size: 1.05rem; color: var(--ink-2); }
 
-.give { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--hair); background: #fff; }
+.give { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--hair); background: #fffefb; }
 .give > div { padding: clamp(30px, 4vw, 48px); }
 .give > div + div { border-left: 1px solid var(--hair); }
 .give h3 { font-size: 1.5rem; margin-bottom: 14px; }

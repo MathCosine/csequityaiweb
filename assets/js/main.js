@@ -81,7 +81,7 @@
       }
     });
     var words = el.querySelectorAll(".wi");
-    words.forEach(function (wi, i) { wi.style.transitionDelay = (i * 55) + "ms"; });
+    words.forEach(function (wi, i) { wi.style.transitionDelay = Math.min(i * 45, 650) + "ms"; });
     if (reduceMotion) { el.classList.add("go"); return; }
     new IntersectionObserver(function (entries, o) {
       entries.forEach(function (e) {
