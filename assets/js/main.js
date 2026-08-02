@@ -9,7 +9,17 @@
   var burger = document.querySelector(".nav-burger");
   var links = document.querySelector(".nav-links");
   if (burger && links) {
-    burger.addEventListener("click", function () { links.classList.toggle("open"); });
+    burger.addEventListener("click", function () {
+      var open = links.classList.toggle("open");
+      burger.classList.toggle("is-open", open);
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    links.addEventListener("click", function (e) {
+      if (e.target.closest("a")) {
+        links.classList.remove("open");
+        burger.classList.remove("is-open");
+      }
+    });
   }
   var lastY = 0;
   window.addEventListener("scroll", function () {

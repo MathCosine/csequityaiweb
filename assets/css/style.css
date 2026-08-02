@@ -764,3 +764,77 @@ footer ul a:hover { transform: translateX(4px); }
 @media (max-width: 880px) {
   .net-viz { max-width: 380px; margin: 0 auto 24px; }
 }
+
+/* ============================================================
+   Coding Happy Hour — signup components + UI pass
+   ============================================================ */
+
+/* three-up now/next, with the open program leading */
+.split.three { grid-template-columns: 1.25fr 1fr 1fr; }
+.split.three > div + div { border-left: 1px solid var(--hair); }
+.split .feature { background: linear-gradient(170deg, rgba(18,138,98,0.055), transparent 62%); }
+.split .foot { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+@media (max-width: 1040px) {
+  .split.three { grid-template-columns: 1fr; }
+  .split.three > div + div { border-left: none; border-top: 1px solid var(--hair); }
+}
+
+/* inline CTA box on the event detail page */
+.cta-box {
+  display: flex; flex-wrap: wrap; gap: 26px;
+  align-items: center; justify-content: space-between;
+  border: 1px solid var(--hair); border-radius: 4px;
+  background: linear-gradient(150deg, rgba(18,138,98,0.07), rgba(14,111,184,0.045) 70%, transparent);
+  padding: clamp(24px, 3.4vw, 36px);
+  margin: 6px 0 36px;
+}
+.cta-box.end { margin: 46px 0 0; }
+.cta-box h3 { font-size: 1.45rem; margin: 14px 0 8px; }
+.cta-box.end h3 { margin-top: 0; }
+.cta-box p { color: var(--ink-2); font-size: 0.95rem; margin: 0; max-width: 46ch; }
+.cta-box p a { color: var(--blue); border-bottom: 1px solid #bcd8ec; }
+.cta-box .btn { flex-shrink: 0; }
+
+/* open-registration event row gets a green marker */
+.evt.open { position: relative; }
+.evt.open::before {
+  content: ""; position: absolute; left: -18px; top: 40px; bottom: 40px; width: 2px;
+  background: linear-gradient(var(--green), rgba(18,138,98,0));
+  border-radius: 2px;
+}
+@media (max-width: 960px) { .evt.open::before { display: none; } }
+.evt .thumb .ph { gap: 14px; padding: 18px; }
+
+/* burger morphs to an X when the menu is open */
+.nav-links.open ~ .nav-burger span,
+.nav-burger.is-open span { background: var(--ink); }
+.nav-burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.is-open span:nth-child(2) { opacity: 0; }
+.nav-burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* tighter, more confident hover on work cards */
+.work:hover { border-color: var(--green-2); }
+
+/* pulse dot also works on light tag over tinted panel */
+.tag.green { background: rgba(255,255,255,0.6); }
+
+/* announce bar: subtle sheen sweep to draw the eye to the open signup */
+.announce a { position: relative; }
+.announce::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.07) 48%, transparent 66%);
+  transform: translateX(-100%);
+  animation: sheen 7s ease-in-out infinite;
+}
+@keyframes sheen { 0%, 62% { transform: translateX(-100%); } 92%, 100% { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .announce::before { animation: none; } }
+
+/* event body: first paragraph sets the tone */
+.event-body .content > p:first-of-type { font-size: 1.06rem; color: var(--ink-2); }
+
+/* headings inside event bodies never orphan a lone rule at the top */
+.event-body .cta-box + p { margin-top: 0; }
+
+/* event rows: status tag always sits on its own line above the title */
+.evt .tag { display: block; width: fit-content; margin-bottom: 12px; }
+.evt .thumb .tag { margin-bottom: 0; }
