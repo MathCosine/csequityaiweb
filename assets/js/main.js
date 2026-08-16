@@ -1,6 +1,7 @@
 /* CS Equity AI — site behavior: scroll dynamics, kinetic type, cursor */
 (function () {
   "use strict";
+  window.__cseq = true; /* tells the inline head failsafe that this file ran */
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
@@ -9,16 +10,34 @@
   var burger = document.querySelector(".nav-burger");
   var links = document.querySelector(".nav-links");
   if (burger && links) {
-    burger.addEventListener("click", function () {
-      var open = links.classList.toggle("open");
+    var setMenu = function (open) {
+      links.classList.toggle("open", open);
       burger.classList.toggle("is-open", open);
       burger.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    burger.addEventListener("click", function (e) {
+      e.stopPropagation();
+      setMenu(!links.classList.contains("open"));
     });
     links.addEventListener("click", function (e) {
-      if (e.target.closest("a")) {
-        links.classList.remove("open");
-        burger.classList.remove("is-open");
+      if (e.target.closest("a")) setMenu(false);
+    });
+    /* tap/click anywhere outside the menu closes it */
+    document.addEventListener("click", function (e) {
+      if (!links.classList.contains("open")) return;
+      if (e.target.closest(".nav-links") || e.target.closest(".nav-burger")) return;
+      setMenu(false);
+    });
+    /* Escape closes it and hands focus back to the button */
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && links.classList.contains("open")) {
+        setMenu(false);
+        burger.focus();
       }
+    });
+    /* leaving mobile width with the menu open would leave stale state behind */
+    window.matchMedia("(max-width: 960px)").addEventListener("change", function (m) {
+      if (!m.matches) setMenu(false);
     });
   }
   var lastY = 0;
@@ -140,15 +159,30 @@
   document.querySelectorAll("[data-count]").forEach(function (el) { cObs.observe(el); });
 
   /* ---------- FAQ ---------- */
+  var faqItems = [];
   document.querySelectorAll(".faq-item").forEach(function (item) {
     var q = item.querySelector(".faq-q");
     var a = item.querySelector(".faq-a");
     if (!q || !a) return;
+    faqItems.push({ item: item, q: q, a: a });
+    q.setAttribute("aria-expanded", "false");
     q.addEventListener("click", function () {
       var open = item.classList.toggle("open");
+      q.setAttribute("aria-expanded", open ? "true" : "false");
       a.style.maxHeight = open ? a.scrollHeight + "px" : "0";
     });
   });
+  /* an open answer's max-height is pinned in px, so it clips when the text
+     reflows (rotation, window resize, late-loading webfont) — recompute it */
+  function resyncFaq() {
+    faqItems.forEach(function (f) {
+      if (f.item.classList.contains("open")) f.a.style.maxHeight = f.a.scrollHeight + "px";
+    });
+  }
+  if (faqItems.length) {
+    window.addEventListener("resize", resyncFaq);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(resyncFaq);
+  }
 
   /* ---------- pinned path: highlight active level ---------- */
   var pathSteps = document.querySelectorAll(".path-step");

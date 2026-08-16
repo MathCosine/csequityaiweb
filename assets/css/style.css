@@ -90,13 +90,19 @@ h4, h5 { font-family: var(--sans); }
 }
 .kin.go .wi { transform: translate3d(0, 0, 0); }
 
-/* reveal primitives */
-.reveal { opacity: 0; transform: translate3d(0, 26px, 0); transition: opacity 0.9s ease, transform 0.9s var(--ease-out); will-change: opacity, transform; }
-.reveal.visible { opacity: 1; transform: translate3d(0, 0, 0); }
-.reveal-blur { opacity: 0; filter: blur(6px); transform: translate3d(0, 14px, 0); transition: opacity 1s ease, filter 1s ease, transform 1s var(--ease-out); }
-.reveal-blur.visible { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); }
-.stagger > * { opacity: 0; transform: translate3d(0, 24px, 0); transition: opacity 0.8s ease, transform 0.8s var(--ease-out); will-change: opacity, transform; }
-.stagger.visible > * { opacity: 1; transform: translate3d(0, 0, 0); }
+/* reveal primitives
+   Gated on html.js so the page is fully readable when scripting is off or
+   main.js fails to load — otherwise everything below the fold stays at
+   opacity 0 forever. The .js class is set inline in <head>. */
+.js .reveal { opacity: 0; transform: translate3d(0, 26px, 0); transition: opacity 0.9s ease, transform 0.9s var(--ease-out); will-change: opacity, transform; }
+.js .reveal.visible { opacity: 1; transform: translate3d(0, 0, 0); }
+.js .reveal-blur { opacity: 0; filter: blur(6px); transform: translate3d(0, 14px, 0); transition: opacity 1s ease, filter 1s ease, transform 1s var(--ease-out); }
+.js .reveal-blur.visible { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); }
+.js .stagger > * { opacity: 0; transform: translate3d(0, 24px, 0); transition: opacity 0.8s ease, transform 0.8s var(--ease-out); will-change: opacity, transform; }
+.js .stagger.visible > * { opacity: 1; transform: translate3d(0, 0, 0); }
+/* without JS: no accordion, so show every answer, and undo the dimmed path steps */
+html:not(.js) .faq-a { max-height: none; }
+html:not(.js) .path-step { opacity: 1; }
 
 /* ============ label ============ */
 .label {
@@ -185,9 +191,13 @@ h4, h5 { font-family: var(--sans); }
     background: var(--paper); border-bottom: 1px solid var(--hair);
     flex-direction: column; align-items: flex-start; gap: 2px;
     padding: 16px clamp(20px, 4.5vw, 56px) 26px;
-    transform: translateY(-130%); transition: transform 0.3s var(--ease-out);
+    transform: translateY(-130%);
+    /* visibility keeps the closed menu out of the tab order and the
+       accessibility tree; delayed so it stays on screen while sliding shut */
+    visibility: hidden;
+    transition: transform 0.3s var(--ease-out), visibility 0s linear 0.3s;
   }
-  .nav-links.open { transform: translateY(0); }
+  .nav-links.open { transform: translateY(0); visibility: visible; transition-delay: 0s; }
   .nav-links > a { padding: 10px 0; font-size: 1.05rem; }
   .nav-burger { display: block; }
 }
@@ -662,6 +672,16 @@ footer ul a:hover { color: var(--ink); }
 
 /* anchors land below the fixed nav */
 section[id] { scroll-margin-top: 110px; }
+
+/* skip link: off-screen until focused by keyboard */
+.skip-link {
+  position: fixed; left: 16px; top: -80px; z-index: 600;
+  background: var(--ink); color: var(--paper);
+  padding: 12px 20px; border-radius: 0 0 4px 4px;
+  font-size: 0.9rem; font-weight: 550;
+  transition: top 0.2s var(--ease-out);
+}
+.skip-link:focus { top: 0; }
 
 /* visible keyboard focus */
 a:focus-visible, button:focus-visible {

@@ -11,6 +11,17 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
 - `sitemap.xml`, `robots.txt` — submit the sitemap in Google Search Console after deploying
 - `assets/` — stylesheet, JS (canvas animation, scroll reveals, FAQ accordion), images
 
+## Conventions worth keeping
+- **Reveal animations are gated on `html.js`.** An inline script in each `<head>`
+  adds the class, and a `load` failsafe removes it again if `main.js` never ran.
+  Without that gate, `.reveal`/`.stagger` sit at `opacity: 0` forever and the page
+  is blank to anything that doesn't execute JS. Keep new hidden-until-scrolled
+  styles under `.js`.
+- **Images are JPEG, sized to their display box**, with `width`/`height` (stops
+  layout shift) and `loading="lazy"`. Re-export rather than dropping in a 4 MB PNG.
+- Every page needs: canonical, description, og:/twitter: tags, a `.skip-link`,
+  and `id="main"` on the first content section.
+
 ## URLs
 `vercel.json` sets `cleanUrls`, so pages are served extensionless (`/events`,
 `/events/vibe-coding-happy-hour`). Every page carries a `<link rel="canonical">`
