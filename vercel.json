@@ -1,4 +1,23 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/about-us", "destination": "/about", "permanent": true },
+    { "source": "/contact-us", "destination": "/contact", "permanent": true },
+    { "source": "/donate", "destination": "/support", "permanent": true },
+    { "source": "/support-us", "destination": "/support", "permanent": true },
+    { "source": "/programs", "destination": "/events", "permanent": true },
+    { "source": "/program/:slug*", "destination": "/events", "permanent": true },
+    { "source": "/event/:slug*", "destination": "/events", "permanent": true },
+    { "source": "/event-details/:slug*", "destination": "/events", "permanent": true },
+    { "source": "/events-1/:slug*", "destination": "/events", "permanent": true },
+    { "source": "/events-1", "destination": "/events", "permanent": true },
+    { "source": "/happy-hour", "destination": "/events/vibe-coding-happy-hour", "permanent": true },
+    { "source": "/coding-happy-hour", "destination": "/events/vibe-coding-happy-hour", "permanent": true },
+    { "source": "/vibe-coding-happy-hour", "destination": "/events/vibe-coding-happy-hour", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/events/:slug", "destination": "/events/:slug.html" }
+  ]
 }
