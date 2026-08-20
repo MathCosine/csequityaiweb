@@ -22,6 +22,35 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
 - Every page needs: canonical, description, og:/twitter: tags, a `.skip-link`,
   and `id="main"` on the first content section.
 
+## Security headers
+`vercel.json` sends CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`,
+`Referrer-Policy`, `Cross-Origin-Opener-Policy` and `Permissions-Policy` on every
+response.
+
+**Footgun:** the CSP allows exactly one inline script, pinned by SHA-256 hash — the
+`.js`-class failsafe in each `<head>`. If you edit that snippet by so much as a
+space, every page's JS silently stops running. Regenerate the hash and paste it
+into the `script-src` directive:
+
+```sh
+python3 - <<'EOF'
+import re, hashlib, base64, pathlib
+s = re.search(r'<script>(.*?)</script>', pathlib.Path('index.html').read_text(), re.S).group(1)
+print('sha256-' + base64.b64encode(hashlib.sha256(s.encode()).digest()).decode())
+EOF
+```
+
+Adding a new external script, font host, or image host also means widening the
+matching CSP directive. `Strict-Transport-Security` carries `includeSubDomains`
+(not `preload`) — drop that token if a subdomain ever needs to serve plain HTTP.
+
+## Structured data
+Each page carries a JSON-LD `@graph`: an `NGO` + `WebSite` + `FAQPage` on the
+homepage, `BreadcrumbList` everywhere below the root, an `ItemList` on the
+archive, and an `EducationEvent` (free, with real dates and location) on every
+event detail page. Keep the event nodes in step with the visible copy — dates,
+titles and `isAccessibleForFree` are what Google reads for rich results.
+
 ## URLs
 `vercel.json` sets `cleanUrls`, so pages are served extensionless (`/events`,
 `/events/vibe-coding-happy-hour`). Every page carries a `<link rel="canonical">`

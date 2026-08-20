@@ -223,6 +223,28 @@
     if (next) next.addEventListener("click", function () { rail.scrollBy({ left: cardW(), behavior: "smooth" }); });
   }
 
+  /* ---------- event rows: whole card is a hit target ---------- */
+  /* The <a> stays the real link (keyboard, crawlers, middle-click); this only
+     widens the click area. Ignores drags/selections and nested links. */
+  document.querySelectorAll(".evt").forEach(function (card) {
+    var links = card.querySelectorAll("a[href]");
+    var target = null;
+    for (var i = 0; i < links.length; i++) {
+      var h = links[i].getAttribute("href") || "";
+      if (h && !/^(https?:|mailto:|#)/.test(h)) { target = links[i]; break; }
+    }
+    if (!target) return;
+    card.classList.add("linked");
+    var downX = 0, downY = 0;
+    card.addEventListener("pointerdown", function (e) { downX = e.clientX; downY = e.clientY; });
+    card.addEventListener("click", function (e) {
+      if (e.target.closest("a, button")) return;                    /* real link wins */
+      if (Math.abs(e.clientX - downX) + Math.abs(e.clientY - downY) > 8) return;  /* a drag */
+      if (window.getSelection && String(window.getSelection())) return;           /* selecting text */
+      target.click();
+    });
+  });
+
   /* ---------- parallax ---------- */
   var pll = document.querySelectorAll("[data-parallax]");
   if (pll.length && !reduceMotion) {
