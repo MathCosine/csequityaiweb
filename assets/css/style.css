@@ -920,3 +920,8 @@ footer ul a:hover { transform: translateX(4px); }
   .evt, .project, .member, .faq-item { page-break-inside: avoid; }
   footer { border-top: 1pt solid #999; }
 }
+
+/* ============ team sub-groups ============ */
+/* keeps coaches/mentors and TAs/tech visually distinct without a new component */
+.team-group + .team-group { margin-top: clamp(44px, 6vh, 62px); }
+.team-group > .label { display: block; margin-bottom: 20px; }
