@@ -22,14 +22,6 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
 - Every page needs: canonical, description, og:/twitter: tags, a `.skip-link`,
   and `id="main"` on the first content section.
 
-## TODO: real photo for Thomas Ni
-`assets/img/team-thomas.jpg` is a temporary "TN" monogram placeholder in the site
-palette. Drop the real portrait in at the same path to swap it in — no markup
-change needed, but keep it a JPEG around 700×795 (the `.member .photo` box is
-`aspect-ratio: 0.88` with `object-position: center 20%`, so a head-and-shoulders
-crop lands right) and update the `width`/`height` attributes on the `<img>` in
-`index.html` and `about.html` if the dimensions differ.
-
 ## Security headers
 `vercel.json` sends CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`,
 `Referrer-Policy`, `Cross-Origin-Opener-Policy` and `Permissions-Policy` on every
