@@ -1,4 +1,144 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/about-us",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/donate",
+      "destination": "/support",
+      "permanent": true
+    },
+    {
+      "source": "/support-us",
+      "destination": "/support",
+      "permanent": true
+    },
+    {
+      "source": "/programs",
+      "destination": "/events",
+      "permanent": true
+    },
+    {
+      "source": "/program/:slug*",
+      "destination": "/events",
+      "permanent": true
+    },
+    {
+      "source": "/event/:slug*",
+      "destination": "/events",
+      "permanent": true
+    },
+    {
+      "source": "/event-details/:slug*",
+      "destination": "/events",
+      "permanent": true
+    },
+    {
+      "source": "/events-1/:slug*",
+      "destination": "/events",
+      "permanent": true
+    },
+    {
+      "source": "/events-1",
+      "destination": "/events",
+      "permanent": true
+    },
+    {
+      "source": "/happy-hour",
+      "destination": "/events/vibe-coding-happy-hour",
+      "permanent": true
+    },
+    {
+      "source": "/coding-happy-hour",
+      "destination": "/events/vibe-coding-happy-hour",
+      "permanent": true
+    },
+    {
+      "source": "/vibe-coding-happy-hour",
+      "destination": "/events/vibe-coding-happy-hour",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/events/:slug",
+      "destination": "/events/:slug.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'sha256-v+Eavz/WFD5cVuCsdXxeQk/FtBFzF6PI3AIjHDFUAuc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; media-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "accelerometer=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), usb=(), xr-spatial-tracking=()"
+        }
+      ]
+    },
+    {
+      "source": "/assets/img/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(css|js)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(sitemap.xml|robots.txt)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    }
+  ]
 }
