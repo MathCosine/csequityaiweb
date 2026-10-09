@@ -163,7 +163,12 @@
       if (e.isIntersecting) { animateCount(e.target); cObs.unobserve(e.target); }
     });
   }, { threshold: 0.5 });
-  document.querySelectorAll("[data-count]").forEach(function (el) { cObs.observe(el); });
+  /* the HTML carries the real figure (for no-JS visitors, link previews and
+     crawlers); only zero it out when we are actually going to count up */
+  document.querySelectorAll("[data-count]").forEach(function (el) {
+    if (!reduceMotion) el.textContent = (el.getAttribute("data-prefix") || "") + "0" + (el.getAttribute("data-suffix") || "");
+    cObs.observe(el);
+  });
 
   /* ---------- FAQ ---------- */
   var faqItems = [];

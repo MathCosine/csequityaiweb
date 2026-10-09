@@ -601,7 +601,6 @@ footer ul a:hover { color: var(--ink); }
 .evt .thumb { border: 1px solid var(--hair); overflow: hidden; aspect-ratio: 16/10; background: #fffefb; }
 .evt .thumb img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85); transition: filter 0.4s, transform 0.7s var(--ease-out); }
 .evt:hover .thumb img { filter: saturate(1); transform: scale(1.04); }
-.evt .thumb .ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
 .evt h3 { font-size: clamp(1.3rem, 2.3vw, 1.7rem); margin: 10px 0 10px; }
 .evt p { color: var(--ink-2); font-size: 0.94rem; max-width: 60ch; }
 .evt .arrow-link { margin-top: 16px; }
@@ -859,7 +858,6 @@ footer ul a:hover { transform: translateX(4px); }
   border-radius: 2px;
 }
 @media (max-width: 960px) { .evt.open::before { display: none; } }
-.evt .thumb .ph { gap: 14px; padding: 18px; }
 
 /* burger morphs to an X when the menu is open */
 .nav-links.open ~ .nav-burger span,
@@ -893,7 +891,6 @@ footer ul a:hover { transform: translateX(4px); }
 
 /* event rows: status tag always sits on its own line above the title */
 .evt .tag { display: block; width: fit-content; margin-bottom: 12px; }
-.evt .thumb .tag { margin-bottom: 0; }
 
 /* ============ nav spacer (event detail pages) ============ */
 /* matches the 70px fixed bar exactly */
