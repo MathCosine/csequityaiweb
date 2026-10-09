@@ -19,8 +19,28 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
   styles under `.js`.
 - **Images are JPEG, sized to their display box**, with `width`/`height` (stops
   layout shift) and `loading="lazy"`. Re-export rather than dropping in a 4 MB PNG.
-- Every page needs: canonical, description, og:/twitter: tags, a `.skip-link`,
-  and `id="main"` on the first content section.
+- Every page needs: canonical, description, og:/twitter: tags, the two font
+  preloads, the icon/manifest links, a `.skip-link`, and `id="main"` on the first
+  content section.
+
+## Fonts
+Fraunces and Inter are **self-hosted** from `assets/fonts/v5.3.0/` (variable woff2,
+latin + latin-ext subsets from Fontsource, SIL OFL — see `assets/fonts/OFL.txt`). No
+request goes to Google, which is why the CSP has no font hosts.
+
+- Fraunces uses `font-display: optional`. When the headline font swapped in late, the
+  mobile hero gained a line and the page jumped (CLS 0.19). Now a slow first visit
+  keeps the fallback serif for that page view, and every later page uses the cached
+  font. Fast connections get Fraunces immediately via the `<link rel="preload">`s.
+- The directory is versioned so the files can be cached as `immutable`. To upgrade,
+  add a new `v<version>/` directory and update the `url()`s and preloads.
+
+## Dates that expire
+Put deadlines in `<time datetime="YYYY-MM-DD">` inside a `[data-deadlines]` block.
+`main.js` compares them with the visitor's clock: past dates get a "Passed" pill, and
+when every date in the block has passed it shows "This intake has closed." So a stale
+cycle stops reading as upcoming without a redeploy — but the surrounding copy still
+needs a human to update it.
 
 ## Security headers
 `vercel.json` sends CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`,
