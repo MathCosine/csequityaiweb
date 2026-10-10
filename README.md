@@ -19,6 +19,13 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
   styles under `.js`.
 - **Images are JPEG, sized to their display box**, with `width`/`height` (stops
   layout shift) and `loading="lazy"`. Re-export rather than dropping in a 4 MB PNG.
+- **Bump the `?v=` on `style.css` / `main.js` whenever you change them.** Both
+  are cached for an hour plus a day of stale-while-revalidate. If the URL stays
+  the same, returning visitors get new HTML with the old stylesheet, and
+  anything new renders unstyled. The version is the first 8 characters of the
+  file's sha256. To update it on every page:
+  `CV=$(sha256sum assets/css/style.css | cut -c1-8); sed -i -E "s#style\.css\?v=[0-9a-f]+#style.css?v=$CV#" *.html events/*.html`
+  (same for `main.js`).
 - **Diagrams are inline SVG inside `<figure class="dg dg-name">`**, wrapped in
   `<!-- dg:name -->` markers. The markup stays inline, not in an `<img>`, so the
   labels use the site fonts and can be read and translated as text. Colours and
