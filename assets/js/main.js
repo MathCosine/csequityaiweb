@@ -69,14 +69,21 @@
     var dot = document.createElement("div"); dot.className = "cursor-dot";
     var ring = document.createElement("div"); ring.className = "cursor-ring";
     document.body.appendChild(dot); document.body.appendChild(ring);
-    var mx = -100, my = -100, rx = -100, ry = -100;
-    document.addEventListener("mousemove", function (e) { mx = e.clientX; my = e.clientY; });
-    (function cursorLoop() {
+    var mx = -100, my = -100, rx = -100, ry = -100, cursorRaf = 0;
+    /* Runs only while the ring is still catching up, then sleeps until the
+       mouse moves again. Centring is done by the trailing translate(-50%,-50%)
+       rather than reading offsetWidth, which forced a layout every frame. */
+    function cursorLoop() {
       rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
-      dot.style.transform = "translate(" + (mx - 3) + "px," + (my - 3) + "px)";
-      ring.style.transform = "translate(" + (rx - ring.offsetWidth / 2) + "px," + (ry - ring.offsetHeight / 2) + "px)";
-      requestAnimationFrame(cursorLoop);
-    })();
+      dot.style.transform = "translate(" + mx + "px," + my + "px) translate(-50%,-50%)";
+      ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%)";
+      cursorRaf = Math.abs(mx - rx) + Math.abs(my - ry) > 0.3 ? requestAnimationFrame(cursorLoop) : 0;
+    }
+    document.addEventListener("mousemove", function (e) {
+      mx = e.clientX; my = e.clientY;
+      if (!cursorRaf) cursorRaf = requestAnimationFrame(cursorLoop);
+    });
+    cursorLoop();
     document.addEventListener("mouseover", function (e) {
       if (e.target.closest("a, button")) ring.classList.add("hovering");
     });
@@ -156,7 +163,12 @@
       if (e.isIntersecting) { animateCount(e.target); cObs.unobserve(e.target); }
     });
   }, { threshold: 0.5 });
-  document.querySelectorAll("[data-count]").forEach(function (el) { cObs.observe(el); });
+  /* the HTML carries the real figure (for no-JS visitors, link previews and
+     crawlers); only zero it out when we are actually going to count up */
+  document.querySelectorAll("[data-count]").forEach(function (el) {
+    if (!reduceMotion) el.textContent = (el.getAttribute("data-prefix") || "") + "0" + (el.getAttribute("data-suffix") || "");
+    cObs.observe(el);
+  });
 
   /* ---------- FAQ ---------- */
   var faqItems = [];
@@ -221,7 +233,73 @@
     var cardW = function () { return rail.firstElementChild ? rail.firstElementChild.offsetWidth + 18 : 320; };
     if (prev) prev.addEventListener("click", function () { rail.scrollBy({ left: -cardW(), behavior: "smooth" }); });
     if (next) next.addEventListener("click", function () { rail.scrollBy({ left: cardW(), behavior: "smooth" }); });
+    /* grey out an arrow once there is nothing further in that direction */
+    var syncArrows = function () {
+      var max = rail.scrollWidth - rail.clientWidth;
+      /* the rail's 4px side padding + snapping means "the start" rests at ~4px */
+      if (prev) prev.disabled = rail.scrollLeft <= 8;
+      if (next) next.disabled = rail.scrollLeft >= max - 8;
+    };
+    rail.addEventListener("scroll", syncArrows, { passive: true });
+    window.addEventListener("resize", syncArrows);
+    syncArrows();
   }
+
+  /* ---------- deadlines: mark the ones already behind us ---------- */
+  document.querySelectorAll("[data-deadlines]").forEach(function (box) {
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var cells = box.querySelectorAll(".date-cell");
+    var past = 0;
+    cells.forEach(function (cell) {
+      var t = cell.querySelector("time[datetime]");
+      if (!t) return;
+      var p = t.getAttribute("datetime").split("-");
+      var d = new Date(+p[0], +p[1] - 1, +p[2]);        /* local midnight, no UTC shift */
+      if (d < today) {
+        cell.classList.add("is-past"); past++;
+        var label = cell.querySelector(".label");
+        if (label && !label.querySelector(".state")) {
+          var s = document.createElement("span");
+          s.className = "state"; s.textContent = "Passed";
+          label.appendChild(s);
+        }
+      }
+    });
+    if (past && past === cells.length && !box.querySelector(".dates-closed")) {
+      var note = document.createElement("p");
+      note.className = "dates-closed";
+      note.textContent = "This intake has closed.";
+      box.appendChild(note);
+    }
+  });
+
+  /* ---------- copy buttons (donation details) ---------- */
+  var copyStatus = document.getElementById("copy-status");
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {       /* older browsers */
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      ok ? resolve() : reject();
+    });
+  }
+  document.querySelectorAll(".copy[data-copy]").forEach(function (btn) {
+    var label = btn.textContent, timer;
+    btn.addEventListener("click", function () {
+      var value = btn.getAttribute("data-copy");
+      copyText(value).then(function () {
+        btn.textContent = "Copied"; btn.classList.add("done");
+        if (copyStatus) copyStatus.textContent = value + " copied to clipboard";
+      }, function () {
+        btn.textContent = "Copy failed";
+      });
+      clearTimeout(timer);
+      timer = setTimeout(function () { btn.textContent = label; btn.classList.remove("done"); }, 1800);
+    });
+  });
 
   /* ---------- event rows: whole card is a hit target ---------- */
   /* The <a> stays the real link (keyboard, crawlers, middle-click); this only
@@ -303,8 +381,10 @@
     }
     resize();
     window.addEventListener("resize", resize);
-    var LINES = 10;
-    (function frame() {
+    var LINES = 10, heroInView = true, heroRaf = 0;
+    function frame() {
+      heroRaf = 0;
+      if (!heroInView || document.hidden) return;   /* nobody is looking: stop drawing */
       t += 0.0032;
       ctx.clearRect(0, 0, W, H);
       for (var i = 0; i < LINES; i++) {
@@ -323,7 +403,15 @@
         ctx.lineWidth = 1;
         ctx.stroke();
       }
-      requestAnimationFrame(frame);
-    })();
+      heroRaf = requestAnimationFrame(frame);
+    }
+    function wakeHero() { if (!heroRaf && heroInView && !document.hidden) heroRaf = requestAnimationFrame(frame); }
+    /* the hero is one screen of a long page — don't redraw it while the
+       visitor is reading the FAQ */
+    new IntersectionObserver(function (entries) {
+      heroInView = entries[0].isIntersecting; wakeHero();
+    }).observe(canvas);
+    document.addEventListener("visibilitychange", wakeHero);
+    wakeHero();
   }
 })();

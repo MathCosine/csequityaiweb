@@ -22,9 +22,10 @@
   <meta name="twitter:description" content="Support CS Equity AI with a 501(c)(3) tax-deductible gift. Corporate matching via Benevity and fee-free giving via Zelle." />
   <meta name="twitter:image" content="https://csequityai.org/assets/img/og-image.jpg" />
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="preload" href="assets/fonts/v5.3.0/fraunces-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/v5.3.0/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/css/style.css" />
   <script>document.documentElement.className+=" js";addEventListener("load",function(){setTimeout(function(){if(!window.__cseq)document.documentElement.classList.remove("js")},1500)});</script>
 
@@ -57,7 +58,7 @@
   <div class="wrap">
     <span class="label reveal-blur visible">Support Us</span>
     <h1 data-split>Every dollar funds a seat that costs a student nothing.</h1>
-    <p class="lede">Gifts to CS EQUITY AI are tax-deductible — we're a verified 501(c)(3) public charity (EIN 99-3463829). Donations fund scholarships, mentorship, and the cloud infrastructure our free programs run on.</p>
+    <p class="lede">Gifts to CS EQUITY AI are tax-deductible — we’re a verified 501(c)(3) public charity (EIN <span class="nowrap">99-3463829</span>). Donations fund scholarships, mentorship, and the cloud infrastructure our free programs run on.</p>
   </div>
 </section>
 
@@ -99,8 +100,8 @@
         <h3 style="margin-top: 14px;">Benevity</h3>
         <p>CS Equity AI is a verified nonprofit partner with major workplace giving platforms, including Benevity. If your employer matches, your gift can be doubled or tripled at no extra cost to you.</p>
         <ol>
-          <li>Log in to your company's employee giving or CSR portal.</li>
-          <li>Search for <b>"CS Equity AI"</b> or EIN <b>99-3463829</b>.</li>
+          <li>Log in to your company’s employee giving or CSR portal.</li>
+          <li>Search for <b>“CS Equity AI”</b> or EIN <b><span class="nowrap">99-3463829</span></b> <button type="button" class="copy" data-copy="99-3463829" aria-label="Copy EIN 99-3463829">Copy</button></li>
           <li>Submit your match request — your employer handles the rest.</li>
         </ol>
       </div>
@@ -108,8 +109,8 @@
         <span class="tag">Fee-free giving</span>
         <h3 style="margin-top: 14px;">Zelle</h3>
         <p>Zelle charges no fees, so 100% of your gift funds computational social equity.</p>
-        <div class="kv">Zelle ID — CSEDIAI</div>
-        <div class="kv" style="font-size: 1rem;">Contact — 650-669-7396</div>
+        <div class="kv">Zelle ID — <span class="nowrap">CSEDIAI</span> <button type="button" class="copy" data-copy="CSEDIAI" aria-label="Copy Zelle ID CSEDIAI">Copy</button></div>
+        <div class="kv" style="font-size: 1rem;">Contact — <a class="tel" href="tel:+16506697396">650-669-7396</a></div>
         <div class="warn">To receive your 501(c)(3) tax receipt, you must include your <b>full legal name and email address</b> in the Zelle memo field. Without it, we cannot issue your official receipt.</div>
       </div>
     </div>
@@ -125,6 +126,8 @@
   </div>
 </section>
 
+
+<p class="sr-only" id="copy-status" role="status" aria-live="polite"></p>
 
 <footer>
   <div class="footer-inner">
@@ -161,7 +164,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>CS EQUITY AI is a 501(c)(3) Public Charity · EIN 99-3463829</span>
+      <span>CS EQUITY AI is a 501(c)(3) Public Charity · EIN <span class="nowrap">99-3463829</span></span>
       <span class="soc">
         <a href="https://www.facebook.com/csequityai" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/csequityai/" target="_blank" rel="noopener">Instagram</a><a href="mailto:info@csequityai.org">Email</a><a class="top" href="#top">Back to top ↑</a>
       </span>
