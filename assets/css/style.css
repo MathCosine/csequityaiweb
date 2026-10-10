@@ -990,3 +990,71 @@ html:not(.js) .copy { display: none; }   /* nothing to click without JS */
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
+
+/* ============ page-header illustrations ============ */
+/* isometric art beside the headline on inner pages, so they don't open on a
+   wall of text; drawn in the same kit as the hero net-viz and course covers */
+.page-head .wrap.has-art {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 430px);
+  gap: clamp(28px, 4vw, 64px); align-items: center;
+}
+.page-art img { display: block; width: 100%; height: auto; }
+@media (max-width: 860px) {
+  .page-head .wrap.has-art { grid-template-columns: 1fr; gap: 8px; }
+  .page-art { max-width: 340px; }
+}
+
+/* stacked contact rows on phones: buttons keep their natural width
+   (as grid children they stretched to full width) */
+@media (max-width: 820px) { .contact-row > .btn { justify-self: start; } }
+
+/* "What's running" cards open with the same cover as the program's page */
+.split .card-cover {
+  display: block; width: 100%; height: auto; aspect-ratio: 16 / 10;
+  border: 1px solid var(--hair); border-radius: 4px; background: #fffefb;
+  margin-bottom: 22px;
+}
+
+/* ============ diagrams ============ */
+/* Inline SVG figures (see README). Text uses the site fonts; every colour is a
+   site token. Wide figures ship a vertical twin for phones. */
+.dg { margin: 0 0 clamp(36px, 5vh, 56px); }
+.dg svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dg .dg-tall { display: none; }
+@media (max-width: 720px) {
+  .dg .dg-wide { display: none; }
+  .dg .dg-tall { display: block; max-width: 420px; }
+}
+.dg figcaption { margin-top: 14px; font-size: 0.85rem; color: var(--ink-3); font-style: italic; }
+.dg text { font-family: var(--sans); font-size: 13px; fill: var(--ink-2); }
+.dg .k { font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; fill: var(--green); }
+.dg .h { font-family: var(--serif); font-size: 21px; fill: var(--ink); }
+.dg .h-sm { font-size: 14px; font-weight: 600; fill: var(--ink); }
+.dg .s-strong, .dg .o { font-size: 13.5px; font-weight: 600; fill: var(--ink); }
+.dg .yr { font-family: var(--serif); font-size: 15px; fill: var(--ink-2); }
+.dg .big { font-family: var(--serif); font-size: 38px; fill: var(--ink); }
+.dg .big-sm { font-family: var(--serif); font-size: 22px; fill: var(--green); }
+.dg .node { fill: #fffefb; stroke: var(--ink); stroke-width: 1.25; }
+.dg .node-accent { fill: #f2f8fd; }
+.dg .pill { fill: var(--paper-2); stroke: var(--hair-2); stroke-width: 1; }
+.dg .dot { fill: var(--green); }
+.dg .edge, .dg .tick, .dg .axis { stroke: var(--ink); stroke-width: 1.25; fill: none; }
+.dg .dashed { stroke-dasharray: 4 5; }
+.dg .stem, .dg .spoke { stroke: var(--hair-2); stroke-width: 1.25; }
+.dg .frame { fill: none; stroke: var(--ink); stroke-width: 1.25; }
+.dg .seg-a { fill: #dceffb; }
+.dg .seg-b { fill: #c9e6d9; }
+.dg .seg-c { fill: #eceee9; }
+.dg .span { fill: var(--blue); }
+.dg .point { fill: var(--green); }
+.dg .tl-item { cursor: pointer; }
+.dg .tl-item:hover .span, .dg .tl-item:focus-visible .span { fill: var(--green); }
+.dg .tl-item:hover .h-sm, .dg .tl-item:focus-visible .h-sm { text-decoration: underline; }
+.dg .student { fill: #dceffb; stroke: var(--ink); stroke-width: 1.25; }
+.dg .coach { fill: var(--green); stroke: var(--ink); stroke-width: 1.25; }
+.dg .mb { stroke: var(--ink); stroke-width: 1.25; }
+.dg .mb.you { fill: #83bde4; }
+.dg .mb.emp { fill: #7cc4a8; }
+.dg .mb.emp.opt { fill: #d9efe6; stroke-dasharray: 4 4; }
+/* the giving card is narrow; keep the matching figure at a reading size */
+.dg-matching .dg-wide { max-width: 520px; }
