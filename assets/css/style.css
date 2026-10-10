@@ -119,9 +119,8 @@ h4, h5 { font-family: var(--sans); }
 .js .reveal-blur.visible { opacity: 1; filter: blur(0); transform: translate3d(0, 0, 0); }
 .js .stagger > * { opacity: 0; transform: translate3d(0, 24px, 0); transition: opacity 0.8s ease, transform 0.8s var(--ease-out); will-change: opacity, transform; }
 .js .stagger.visible > * { opacity: 1; transform: translate3d(0, 0, 0); }
-/* without JS: no accordion, so show every answer, and undo the dimmed path steps */
+/* without JS: no accordion, so show every answer */
 html:not(.js) .faq-a { max-height: none; }
-html:not(.js) .path-step { opacity: 1; }
 
 /* ============ label ============ */
 .label {
@@ -394,14 +393,15 @@ html:not(.js) .path-step { opacity: 1; }
 }
 .path-sticky .big span.on { opacity: 1; transform: none; }
 .path-sticky .names { margin-top: 34px; border-top: 1px solid var(--hair); }
-.path-sticky .names div {
-  padding: 13px 2px; border-bottom: 1px solid var(--hair);
-  font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--ink-3); display: flex; justify-content: space-between;
+.path-sticky .names button {
+  display: flex; justify-content: space-between; width: 100%;
+  padding: 13px 2px; border: 0; border-bottom: 1px solid var(--hair); background: none;
+  font: inherit; font-size: 0.85rem; letter-spacing: 0.14em; text-transform: uppercase; text-align: left;
+  color: var(--ink-3); cursor: pointer;
   transition: color 0.3s;
 }
-.path-sticky .names div.on { color: var(--ink); }
-.path-sticky .names div.on::after { content: "●"; color: var(--green); font-size: 0.5rem; align-self: center; }
+.path-sticky .names button:hover, .path-sticky .names button.on { color: var(--ink); }
+.path-sticky .names button.on::after { content: "●"; color: var(--green); font-size: 0.5rem; align-self: center; }
 .path-step { padding: clamp(36px, 6vh, 64px) 0; border-bottom: 1px solid var(--hair); }
 .path-step:first-child { padding-top: 6px; }
 .path-step .k { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); }
@@ -413,10 +413,19 @@ html:not(.js) .path-step { opacity: 1; }
 .path-step ul li::before { content: "—"; margin-right: 12px; color: var(--ink-3); }
 .path-step .arrow-link { margin-top: 20px; }
 @media (max-width: 880px) {
-  .path-grid { grid-template-columns: 1fr; }
+  .path-grid { grid-template-columns: 1fr; gap: 26px; }
   .path-sticky { position: static; }
   .path-sticky .big { display: none; }
   .path-sticky .names { display: none; }
+  /* with JS the levels are tabs: a row of three above the panel */
+  .js .path-sticky .names { display: flex; margin-top: 0; border-top: 0; border-bottom: 1px solid var(--hair); }
+  .js .path-sticky .names button {
+    flex: 1; justify-content: center; width: auto; padding: 12px 4px;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    font-size: 0.72rem; letter-spacing: 0.1em;
+  }
+  .js .path-sticky .names button.on { border-bottom-color: var(--green); }
+  .js .path-sticky .names button.on::after { content: none; }
 }
 
 /* ============ project marquee cards ============ */
@@ -717,7 +726,7 @@ section[id] { scroll-margin-top: 110px; }
 .skip-link:focus { top: 0; }
 
 /* visible keyboard focus */
-a:focus-visible, button:focus-visible {
+a:focus-visible, button:focus-visible, .path-step:focus-visible {
   outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 3px;
 }
 
@@ -744,10 +753,15 @@ a:focus-visible, button:focus-visible {
 /* ticker separators quieter */
 .ticker span::after { opacity: 0.6; }
 
-/* path: current step lit, others receded */
-.path-step { transition: opacity 0.5s ease; opacity: 0.38; }
-.path-step.active { opacity: 1; }
-@media (max-width: 880px) { .path-step { opacity: 1; } }
+/* path: the levels are tabs, one panel at a time. Panels share one grid cell,
+   so the section is as tall as the longest level and switching never moves
+   what's below. Without JS all three stay stacked. */
+.js .path-panels { display: grid; }
+.js .path-step { grid-area: 1 / 1; padding-top: 6px; padding-bottom: 6px; border-bottom: 0; }
+.js .path-step:not(.active) { visibility: hidden; }
+.js .path-step.active { animation: path-in 0.45s var(--ease-out); }
+@keyframes path-in { from { opacity: 0; transform: translate3d(0, 10px, 0); } }
+@media (prefers-reduced-motion: reduce) { .js .path-step.active { animation: none; } }
 
 /* works rail: edge fade so it reads as scrollable */
 .works-rail-wrap { position: relative; }
@@ -935,7 +949,7 @@ footer ul a:hover { transform: translateX(4px); }
   body { background: #fff; color: #000; font-size: 11pt; }
   .js .reveal, .js .reveal-blur, .js .stagger > * { opacity: 1 !important; filter: none !important; transform: none !important; }
   .kin .wi { transform: none !important; }
-  .path-step { opacity: 1 !important; }
+  .path-step { visibility: visible !important; grid-area: auto !important; }
   .faq-a { max-height: none !important; }
   .section { padding: 18pt 0 !important; }
   .works-rail { display: block !important; overflow: visible !important; }
@@ -999,9 +1013,14 @@ html:not(.js) .copy { display: none; }   /* nothing to click without JS */
   gap: clamp(28px, 4vw, 64px); align-items: center;
 }
 .page-art img { display: block; width: 100%; height: auto; }
-@media (max-width: 860px) {
-  .page-head .wrap.has-art { grid-template-columns: 1fr; gap: 8px; }
-  .page-art { max-width: 340px; }
+/* always beside the words, never stacked under them: the column narrows on
+   tablets, and on phones the art is dropped rather than pushed below */
+@media (max-width: 1000px) {
+  .page-head .wrap.has-art { grid-template-columns: minmax(0, 1fr) minmax(0, 32%); gap: 24px; }
+}
+@media (max-width: 640px) {
+  .page-head .wrap.has-art { display: block; }
+  .page-art { display: none; }
 }
 
 /* stacked contact rows on phones: buttons keep their natural width

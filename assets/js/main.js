@@ -196,21 +196,35 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(resyncFaq);
   }
 
-  /* ---------- pinned path: highlight active level ---------- */
+  /* ---------- path: level tabs (one level shown at a time) ---------- */
+  var pathTabs = document.querySelectorAll('.path-sticky [role="tab"]');
   var pathSteps = document.querySelectorAll(".path-step");
   var bigNums = document.querySelectorAll(".path-sticky .big span");
-  var names = document.querySelectorAll(".path-sticky .names div");
-  if (pathSteps.length && bigNums.length) {
-    var stepObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var idx = Array.prototype.indexOf.call(pathSteps, e.target);
-        bigNums.forEach(function (n, i) { n.classList.toggle("on", i === idx); });
-        names.forEach(function (n, i) { n.classList.toggle("on", i === idx); });
-        pathSteps.forEach(function (s, i) { s.classList.toggle("active", i === idx); });
+  if (pathTabs.length && pathSteps.length) {
+    var showLevel = function (idx, focus) {
+      pathTabs.forEach(function (t, i) {
+        var on = i === idx;
+        t.classList.toggle("on", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
       });
-    }, { rootMargin: "-40% 0px -50% 0px" });
-    pathSteps.forEach(function (s) { stepObs.observe(s); });
+      bigNums.forEach(function (n, i) { n.classList.toggle("on", i === idx); });
+      pathSteps.forEach(function (s, i) { s.classList.toggle("active", i === idx); });
+    };
+    pathTabs.forEach(function (t, i) {
+      t.addEventListener("click", function () { showLevel(i, false); });
+      t.addEventListener("keydown", function (e) {
+        var n = pathTabs.length, j = null;
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") j = (i + 1) % n;
+        else if (e.key === "ArrowUp" || e.key === "ArrowLeft") j = (i - 1 + n) % n;
+        else if (e.key === "Home") j = 0;
+        else if (e.key === "End") j = n - 1;
+        if (j === null) return;
+        e.preventDefault();
+        showLevel(j, true);
+      });
+    });
   }
 
   /* ---------- works rail: drag to scroll + arrows ---------- */
