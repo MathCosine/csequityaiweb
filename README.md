@@ -19,6 +19,15 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
   styles under `.js`.
 - **Images are JPEG, sized to their display box**, with `width`/`height` (stops
   layout shift) and `loading="lazy"`. Re-export rather than dropping in a 4 MB PNG.
+- **Diagrams are inline SVG inside `<figure class="dg dg-name">`**, wrapped in
+  `<!-- dg:name -->` markers. The markup stays inline, not in an `<img>`, so the
+  labels use the site fonts and can be read and translated as text. Colours and
+  type come from the `.dg` classes in `style.css`. Do not hard-code fills on
+  `<text>`. Each figure has a wide SVG (`.dg-wide`) and a stacked one
+  (`.dg-tall`) that swap at 720px. Change the labels in both, and give each SVG
+  a `<title>`/`<desc>` with page-unique ids for screen readers.
+- Page-head illustrations (`assets/img/art-*.svg`) and course covers are
+  decorative, so they get `alt=""` and contain no text of their own.
 - Every page needs: canonical, description, og:/twitter: tags, the two font
   preloads, the icon/manifest links, a `.skip-link`, and `id="main"` on the first
   content section.
