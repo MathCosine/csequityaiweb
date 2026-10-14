@@ -50,7 +50,7 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; text-decoration: none; }
 ::selection { background: #d5e9f7; }
 
@@ -574,7 +574,11 @@ footer { border-top: 1px solid var(--hair-2); background: var(--paper-2); }
 .footer-inner { max-width: 1240px; margin: 0 auto; padding: 60px clamp(20px, 4.5vw, 56px) 36px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
 @media (max-width: 820px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 540px) { .footer-grid { grid-template-columns: 1fr; } }
+@media (max-width: 540px) {
+  .footer-grid { gap: 28px 20px; }
+  .footer-grid > :first-child { grid-column: 1 / -1; }
+  .footer-inner { padding-top: 44px; }
+}
 footer .brand { margin-bottom: 14px; }
 footer p { font-size: 0.88rem; color: var(--ink-2); max-width: 34ch; }
 footer h2 { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
@@ -613,9 +617,16 @@ footer ul a:hover { color: var(--ink); }
 .evt h3 { font-size: clamp(1.3rem, 2.3vw, 1.7rem); margin: 10px 0 10px; }
 .evt p { color: var(--ink-2); font-size: 0.94rem; max-width: 60ch; }
 .evt .arrow-link { margin-top: 16px; }
+/* narrower screens: date and thumbnail share the top row, text runs full
+   width below, rather than stacking a full-width image in every row */
 @media (max-width: 960px) {
-  .evt { grid-template-columns: 1fr; gap: 18px; }
-  .evt .thumb { max-width: 440px; }
+  .evt { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 16px 20px; padding: 32px 0; }
+  .evt > .when { align-self: center; }
+  .evt > :nth-child(3) { grid-column: 1 / -1; }
+}
+@media (max-width: 540px) {
+  .evt { grid-template-columns: minmax(0, 1fr) 46%; }
+  .evt .when .y { font-size: 1.55rem; }
 }
 
 /* ============ event detail ============ */
@@ -633,6 +644,8 @@ footer ul a:hover { color: var(--ink); }
 .event-body ul li { padding: 8px 0; border-bottom: 1px dotted var(--hair-2); }
 .event-body ul li::before { content: "—"; margin-right: 10px; color: var(--ink-3); }
 .event-body img.figure { border: 1px solid var(--hair); margin: 28px 0 10px; }
+/* tall posters: capped so one image isn't a whole screen of scrolling */
+.event-body img.figure.portrait { max-width: min(100%, 460px); }
 .event-body .caption { font-size: 0.82rem; color: var(--ink-3); margin-bottom: 26px; font-style: italic; }
 .project { border-top: 1px solid var(--hair); padding: 22px 0; transition: padding-left 0.3s var(--ease-out); }
 .project:hover { padding-left: 10px; }
@@ -965,6 +978,15 @@ footer ul a:hover { transform: translateX(4px); }
 /* ============ team sub-groups ============ */
 /* keeps coaches/mentors and TAs/tech visually distinct without a new component */
 .team-group + .team-group { margin-top: clamp(44px, 6vh, 62px); }
+/* wide screens: one row of five, the TA group keeping its own label over the
+   fifth column. Five equal tracks with the same 28px gap as .team, so the
+   photos all come out the same size */
+@media (min-width: 1100px) {
+  .team-groups { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 28px; align-items: start; }
+  .team-groups > .team-group:first-child { grid-column: span 4; }
+  .team-groups > .team-group + .team-group { margin-top: 0; }
+  .team-groups > .team-group:last-child .team { grid-template-columns: 1fr; }
+}
 .team-group > .label { display: block; margin-bottom: 20px; }
 
 /* ============ deadlines that have passed ============ */
@@ -983,6 +1005,8 @@ footer ul a:hover { transform: translateX(4px); }
   border-right: 1px solid var(--hair); border-bottom: 1px solid var(--hair);
   background: var(--paper-2); font-size: 0.88rem; color: var(--ink-2);
 }
+.dates.all-past .date-cell { display: none; }
+.dates.all-past { background: var(--paper-2); }
 
 /* keep IDs and numbers like the EIN from breaking across lines */
 .nowrap { white-space: nowrap; }
@@ -1077,3 +1101,33 @@ html:not(.js) .copy { display: none; }   /* nothing to click without JS */
 .dg .mb.emp.opt { fill: #d9efe6; stroke-dasharray: 4 4; }
 /* the giving card is narrow; keep the matching figure at a reading size */
 .dg-matching .dg-wide { max-width: 520px; }
+
+/* ============ event recaps: at-a-glance box ============ */
+/* the facts of each program, pinned in the column the 780px article leaves
+   empty on wide screens; on narrow ones it sits above the article, compact */
+.event-body .wrap {
+  display: grid; grid-template-columns: minmax(0, 780px) minmax(0, 1fr);
+  column-gap: clamp(36px, 5vw, 72px); align-items: start;
+}
+.event-body .content { grid-column: 1; grid-row: 1; }
+.event-body .evt-nav { grid-column: 1 / -1; }
+.event-body h2[id] { scroll-margin-top: 100px; }
+.glance {
+  grid-column: 2; grid-row: 1; position: sticky; top: 96px; margin-top: 28px;
+  border-top: 1px solid var(--ink); padding-top: 16px;
+}
+.glance dl > div { padding: 11px 0; border-bottom: 1px solid var(--hair); }
+.glance dt { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 3px; }
+.glance dd { font-size: 0.9rem; line-height: 1.45; color: var(--ink); }
+.glance .btn { margin-top: 20px; }
+.glance-links { list-style: none; margin-top: 18px; display: grid; gap: 10px; }
+.glance-links .arrow-link { font-size: 0.88rem; }
+.event-body .glance-links li { padding: 0; border: 0; }
+.event-body .glance-links li::before { content: none; }
+@media (max-width: 960px) {
+  .event-body .wrap { display: block; }
+  .glance { position: static; margin: 0 0 6px; }
+  .glance dl { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; }
+  .glance-links { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+}
+@media print { .glance { position: static; } }
