@@ -117,6 +117,22 @@ pointing at that form. Legacy paths from the previous site redirect (301) to the
 new home; add more entries to `redirects` in `vercel.json` as stale URLs turn up in
 Search Console.
 
+## Domain, DNS & email
+The csequityai.org DNS is managed in Vercel (Domains → csequityai.org → DNS
+Records). The website doesn't depend on mail records, but **info@csequityai.org**
+(Google Workspace) does. If the domain is moved, re-added or switched to Vercel
+nameservers, recreate this record, or mail stops arriving while the site keeps
+working:
+
+| Type | Name | Value | Priority |
+|---|---|---|---|
+| MX | *(blank / `@`)* | `smtp.google.com` | 1 |
+
+Delete any other MX records on the domain. For outgoing mail to land in inboxes
+rather than spam, also keep an SPF TXT record (`v=spf1 include:_spf.google.com ~all`)
+and the DKIM TXT record that Google Admin generates (Apps → Google Workspace →
+Gmail → Authenticate email). `vercel.json` has no effect on any of this.
+
 ## Key links baked in
 - Learning platform (all sign-up CTAs): https://oil2-next-827682634474.asia-east1.run.app/
 - Current course materials: https://github.com/Alwin-Lin/mle-star-Bootcamp
