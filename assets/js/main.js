@@ -279,11 +279,15 @@
         }
       }
     });
+    /* a fully closed intake folds into one line instead of three "Passed" cards */
     if (past && past === cells.length && !box.querySelector(".dates-closed")) {
+      var last = cells[cells.length - 1].querySelector("time[datetime]").getAttribute("datetime").split("-");
+      var when = new Date(+last[0], +last[1] - 1, +last[2]).toLocaleDateString("en-US", { month: "long", year: "numeric" });
       var note = document.createElement("p");
       note.className = "dates-closed";
-      note.textContent = "This intake has closed.";
+      note.textContent = "The last intake closed in " + when + ". Dates for the next one will appear here.";
       box.appendChild(note);
+      box.classList.add("all-past");
     }
   });
 

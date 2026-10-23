@@ -33,6 +33,12 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
   `<text>`. Each figure has a wide SVG (`.dg-wide`) and a stacked one
   (`.dg-tall`) that swap at 720px. Change the labels in both, and give each SVG
   a `<title>`/`<desc>` with page-unique ids for screen readers.
+- **Event recaps open with an `<aside class="glance">`.** It holds the program's
+  facts (dates, format, who it was for) and key links. It sits pinned beside the
+  article on wide screens and as a compact grid above it on narrow ones. Use only
+  facts that are already in the recap text.
+- Give tall portrait posters `class="figure portrait"` so they're capped at 460px
+  wide instead of filling a whole screen.
 - Page-head illustrations (`assets/img/art-*.svg`) and course covers are
   decorative, so they get `alt=""` and contain no text of their own.
 - Every page needs: canonical, description, og:/twitter: tags, the two font
@@ -51,12 +57,29 @@ request goes to Google, which is why the CSP has no font hosts.
 - The directory is versioned so the files can be cached as `immutable`. To upgrade,
   add a new `v<version>/` directory and update the `url()`s and preloads.
 
+## Logo & icons
+All of these are cut from the round "CS Equity AI — Empowering future tech leaders" logo:
+- `assets/img/logo-mark.png`: the circle with a transparent background, shown at
+  38px beside the wordmark in the nav and footer.
+- `favicon.ico` (16/32/48) and `assets/img/favicon-96.png`: browser tabs and
+  search results. Google shows favicons cropped to a circle, which this logo
+  already is.
+- `assets/img/apple-touch-icon.png`, `icon-192.png`, `icon-512.png`: the circle on
+  its own gradient, full bleed. `icon-512.png` is also the `logo` in the JSON-LD.
+- `assets/img/icon-maskable-512.png`: the circle at 80% on navy, so Android's
+  mask never clips the lettering.
+- `assets/img/og-image.jpg`: the share card, with the mark top-left.
+
+To swap the logo again, regenerate all of these from one square source, so they match.
+
 ## Dates that expire
 Put deadlines in `<time datetime="YYYY-MM-DD">` inside a `[data-deadlines]` block.
-`main.js` compares them with the visitor's clock: past dates get a "Passed" pill, and
-when every date in the block has passed it shows "This intake has closed." So a stale
-cycle stops reading as upcoming without a redeploy — but the surrounding copy still
-needs a human to update it.
+`main.js` compares them with the visitor's clock, and past dates get a "Passed" pill.
+Once every date in the block has passed, the cards fold into a single line ("The last
+intake closed in <month year>…"). Put the next cycle's dates into the same markup and
+the cards come back. A stale cycle stops reading as upcoming without a redeploy, but
+the surrounding copy still needs a human to update it. Keep that copy free of
+season/year promises ("the next course", not "Fall 2026") unless the dates are set.
 
 ## Security headers
 `vercel.json` sends CSP, HSTS, `X-Content-Type-Options`, `X-Frame-Options`,
