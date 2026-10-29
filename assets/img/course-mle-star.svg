@@ -46,6 +46,6 @@
 <circle cx="524" cy="389" r="15" fill="#ffffff" stroke="#0e6fb8" stroke-width="1.8"/>
 <path d="M519 384 L529 394 M529 384 L519 394" stroke="#0e6fb8" stroke-width="2.4" stroke-linecap="round"/>
 <polygon points="700,48 706.5,65.1 724.7,66 710.5,77.4 715.3,95 700,85 684.7,95 689.5,77.4 675.3,66 693.5,65.1" fill="#f2b43c" stroke="#14202b" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M742 100 Q744.2 105.8 750 108 Q744.2 110.2 742 116 Q739.8 110.2 734 108 Q739.8 105.8 742 100Z" fill="#5cbf9b"/>
-<path d="M664 44 Q665.7 48.3 670 50 Q665.7 51.7 664 56 Q662.3 51.7 658 50 Q662.3 48.3 664 44Z" fill="#4ea3dd"/>
+
+
 </svg>

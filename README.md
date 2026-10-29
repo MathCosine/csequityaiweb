@@ -26,6 +26,12 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
   file's sha256. To update it on every page:
   `CV=$(sha256sum assets/css/style.css | cut -c1-8); sed -i -E "s#style\.css\?v=[0-9a-f]+#style.css?v=$CV#" *.html events/*.html`
   (same for `main.js`).
+- **Keep the voice plain and the motion quiet.** Write copy the way a volunteer
+  would say it: full sentences, few em-dashes, no slogan fragments ("Not a lecture
+  series.") or "not X, it's Y" lines. The custom cursor, word-by-word headline
+  animation, magnetic buttons, photo tilt, parallax, scroll ticker and sparkle
+  shapes were taken out because they made the site read as template-made. Reveals
+  are a short 10px fade; keep them that way.
 - **Diagrams are inline SVG inside `<figure class="dg dg-name">`**, wrapped in
   `<!-- dg:name -->` markers. The markup stays inline, not in an `<img>`, so the
   labels use the site fonts and can be read and translated as text. Colours and

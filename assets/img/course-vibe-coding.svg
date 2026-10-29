@@ -27,9 +27,9 @@
 <rect x="90" y="343" width="9" height="13" rx="2" fill="#5cbf9b"/>
 <path d="M374 254 C 395 218, 412 218, 428 236" fill="none" stroke="#14202b" stroke-width="1.6" stroke-dasharray="5 6" stroke-linecap="round"/>
 <path d="M420 228 L429 237 L417 241" fill="none" stroke="#14202b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M398 180 Q401.9 190.1 412 194 Q401.9 197.9 398 208 Q394.1 197.9 384 194 Q394.1 190.1 398 180Z" fill="#128a62"/>
-<path d="M419 163 Q421 168 426 170 Q421 172 419 177 Q417 172 412 170 Q417 168 419 163Z" fill="#0e6fb8"/>
-<path d="M380 163 Q381.4 166.6 385 168 Q381.4 169.4 380 173 Q378.6 169.4 375 168 Q378.6 166.6 380 163Z" fill="#5cbf9b"/>
+
+
+
 <rect x="446" y="108" width="296" height="296" rx="14" fill="#14202b" fill-opacity="0.08"/>
 <g clip-path="url(#screen)">
 <rect x="440" y="100" width="296" height="296" fill="url(#sky)"/>
