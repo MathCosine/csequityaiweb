@@ -26,6 +26,12 @@ plain HTML/CSS/JS that can be hosted anywhere (GitHub Pages, Cloud Storage, Netl
   file's sha256. To update it on every page:
   `CV=$(sha256sum assets/css/style.css | cut -c1-8); sed -i -E "s#style\.css\?v=[0-9a-f]+#style.css?v=$CV#" *.html events/*.html`
   (same for `main.js`).
+- **Keep the voice plain and the motion quiet.** Write copy the way a volunteer
+  would say it: full sentences, few em-dashes, no slogan fragments ("Not a lecture
+  series.") or "not X, it's Y" lines. The custom cursor, word-by-word headline
+  animation, magnetic buttons, photo tilt, parallax, scroll ticker and sparkle
+  shapes were taken out because they made the site read as template-made. Reveals
+  are a short 10px fade; keep them that way.
 - **Diagrams are inline SVG inside `<figure class="dg dg-name">`**, wrapped in
   `<!-- dg:name -->` markers. The markup stays inline, not in an `<img>`, so the
   labels use the site fonts and can be read and translated as text. Colours and
@@ -116,6 +122,22 @@ titles and `isAccessibleForFree` are what Google reads for rich results.
 pointing at that form. Legacy paths from the previous site redirect (301) to their
 new home; add more entries to `redirects` in `vercel.json` as stale URLs turn up in
 Search Console.
+
+## Domain, DNS & email
+The csequityai.org DNS is managed in Vercel (Domains → csequityai.org → DNS
+Records). The website doesn't depend on mail records, but **info@csequityai.org**
+(Google Workspace) does. If the domain is moved, re-added or switched to Vercel
+nameservers, recreate this record, or mail stops arriving while the site keeps
+working:
+
+| Type | Name | Value | Priority |
+|---|---|---|---|
+| MX | *(blank / `@`)* | `smtp.google.com` | 1 |
+
+Delete any other MX records on the domain. For outgoing mail to land in inboxes
+rather than spam, also keep an SPF TXT record (`v=spf1 include:_spf.google.com ~all`)
+and the DKIM TXT record that Google Admin generates (Apps → Google Workspace →
+Gmail → Authenticate email). `vercel.json` has no effect on any of this.
 
 ## Key links baked in
 - Learning platform (all sign-up CTAs): https://oil2-next-827682634474.asia-east1.run.app/

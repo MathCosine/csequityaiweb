@@ -1,9 +1,8 @@
-/* CS Equity AI — site behavior: scroll dynamics, kinetic type, cursor */
+/* CS Equity AI — site behavior: nav, reveals, tabs, carousel, deadlines */
 (function () {
   "use strict";
   window.__cseq = true; /* tells the inline head failsafe that this file ran */
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
   /* ---------- nav: mobile menu + hide-on-scroll ---------- */
   var nav = document.querySelector(".nav");
@@ -53,79 +52,6 @@
     lastY = y;
   }, { passive: true });
 
-  /* ---------- scroll progress bar ---------- */
-  var progress = document.createElement("div");
-  progress.className = "progress";
-  document.body.appendChild(progress);
-  function paintProgress() {
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.transform = "scaleX(" + (max > 0 ? window.scrollY / max : 0) + ")";
-  }
-  window.addEventListener("scroll", paintProgress, { passive: true });
-  paintProgress();
-
-  /* ---------- custom cursor ---------- */
-  if (finePointer && !reduceMotion) {
-    var dot = document.createElement("div"); dot.className = "cursor-dot";
-    var ring = document.createElement("div"); ring.className = "cursor-ring";
-    document.body.appendChild(dot); document.body.appendChild(ring);
-    var mx = -100, my = -100, rx = -100, ry = -100, cursorRaf = 0;
-    /* Runs only while the ring is still catching up, then sleeps until the
-       mouse moves again. Centring is done by the trailing translate(-50%,-50%)
-       rather than reading offsetWidth, which forced a layout every frame. */
-    function cursorLoop() {
-      rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
-      dot.style.transform = "translate(" + mx + "px," + my + "px) translate(-50%,-50%)";
-      ring.style.transform = "translate(" + rx + "px," + ry + "px) translate(-50%,-50%)";
-      cursorRaf = Math.abs(mx - rx) + Math.abs(my - ry) > 0.3 ? requestAnimationFrame(cursorLoop) : 0;
-    }
-    document.addEventListener("mousemove", function (e) {
-      mx = e.clientX; my = e.clientY;
-      if (!cursorRaf) cursorRaf = requestAnimationFrame(cursorLoop);
-    });
-    cursorLoop();
-    document.addEventListener("mouseover", function (e) {
-      if (e.target.closest("a, button")) ring.classList.add("hovering");
-    });
-    document.addEventListener("mouseout", function (e) {
-      if (e.target.closest("a, button")) ring.classList.remove("hovering");
-    });
-  }
-
-  /* ---------- kinetic type: split headlines into words ---------- */
-  document.querySelectorAll("[data-split]").forEach(function (el) {
-    var nodes = Array.prototype.slice.call(el.childNodes);
-    el.textContent = "";
-    el.classList.add("kin");
-    function wrapWords(text, parent) {
-      text.split(/(\s+)/).forEach(function (piece) {
-        if (!piece) return;
-        if (/^\s+$/.test(piece)) { parent.appendChild(document.createTextNode(" ")); return; }
-        var w = document.createElement("span"); w.className = "w";
-        var wi = document.createElement("span"); wi.className = "wi";
-        wi.textContent = piece;
-        w.appendChild(wi); parent.appendChild(w);
-      });
-    }
-    nodes.forEach(function (node) {
-      if (node.nodeType === 3) { wrapWords(node.textContent, el); }
-      else if (node.nodeType === 1) {
-        var clone = node.cloneNode(false);
-        clone.textContent = "";
-        wrapWords(node.textContent, clone);
-        el.appendChild(clone);
-      }
-    });
-    var words = el.querySelectorAll(".wi");
-    words.forEach(function (wi, i) { wi.style.transitionDelay = Math.min(i * 45, 650) + "ms"; });
-    if (reduceMotion) { el.classList.add("go"); return; }
-    new IntersectionObserver(function (entries, o) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("go"); o.unobserve(e.target); }
-      });
-    }, { threshold: 0.35 }).observe(el);
-  });
-
   /* ---------- reveals + stagger ---------- */
   var obs = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
@@ -135,7 +61,7 @@
   document.querySelectorAll(".reveal, .reveal-blur, .stagger").forEach(function (el) {
     if (el.classList.contains("stagger")) {
       Array.prototype.forEach.call(el.children, function (child, i) {
-        child.style.transitionDelay = (i * 90) + "ms";
+        child.style.transitionDelay = (i * 60) + "ms";
       });
     }
     obs.observe(el);
@@ -340,51 +266,6 @@
       target.click();
     });
   });
-
-  /* ---------- parallax ---------- */
-  var pll = document.querySelectorAll("[data-parallax]");
-  if (pll.length && !reduceMotion) {
-    var ticking = false;
-    function parallax() {
-      pll.forEach(function (el) {
-        var speed = parseFloat(el.getAttribute("data-parallax")) || 0.1;
-        var rect = el.getBoundingClientRect();
-        var mid = rect.top + rect.height / 2 - window.innerHeight / 2;
-        el.style.transform = "translateY(" + (-mid * speed).toFixed(1) + "px)";
-      });
-      ticking = false;
-    }
-    window.addEventListener("scroll", function () {
-      if (!ticking) { requestAnimationFrame(parallax); ticking = true; }
-    }, { passive: true });
-    parallax();
-  }
-
-  /* ---------- tilt on team photos ---------- */
-  if (finePointer && !reduceMotion) {
-    document.querySelectorAll(".member .photo").forEach(function (ph) {
-      ph.addEventListener("mousemove", function (e) {
-        var r = ph.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width - 0.5;
-        var y = (e.clientY - r.top) / r.height - 0.5;
-        ph.style.transform = "rotateY(" + (x * 7) + "deg) rotateX(" + (-y * 7) + "deg)";
-      });
-      ph.addEventListener("mouseleave", function () { ph.style.transform = ""; });
-    });
-  }
-
-  /* ---------- magnetic buttons ---------- */
-  if (finePointer && !reduceMotion) {
-    document.querySelectorAll(".btn").forEach(function (btn) {
-      btn.addEventListener("mousemove", function (e) {
-        var r = btn.getBoundingClientRect();
-        var x = e.clientX - r.left - r.width / 2;
-        var y = e.clientY - r.top - r.height / 2;
-        btn.style.transform = "translate(" + x * 0.18 + "px," + y * 0.3 + "px)";
-      });
-      btn.addEventListener("mouseleave", function () { btn.style.transform = ""; });
-    });
-  }
 
   /* ---------- hero canvas: drifting contour lines ---------- */
   var canvas = document.getElementById("hero-canvas");
