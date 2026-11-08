@@ -1072,3 +1072,10 @@ html:not(.js) .copy { display: none; }   /* nothing to click without JS */
   .glance-links { display: flex; flex-wrap: wrap; gap: 10px 22px; }
 }
 @media print { .glance { position: static; } }
+
+/* long official course name: the distinctive part as the heading, the rest as a quieter line */
+.h3-sub { display: block; margin-top: 6px; font-family: var(--sans); font-size: 0.82rem; font-weight: 500;
+  letter-spacing: 0; line-height: 1.4; color: var(--ink-2); }
+/* links inside the key-date box read as links */
+.date-cell p a { color: var(--blue); border-bottom: 1px solid #bcd8ec; }
+.date-cell p a:hover { border-color: var(--blue); }

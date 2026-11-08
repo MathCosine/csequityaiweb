@@ -140,7 +140,9 @@ and the DKIM TXT record that Google Admin generates (Apps → Google Workspace �
 Gmail → Authenticate email). `vercel.json` has no effect on any of this.
 
 ## Key links baked in
-- Learning platform (all sign-up CTAs): https://oil2-next-827682634474.asia-east1.run.app/
+- Fall 2026 registration form (announcement bar, homepage course card, key-date box, closing banner, FAQ,
+  Programs page): https://forms.gle/d4iYPMVnYYJ8Zn3h9
+- Learning platform (other sign-up CTAs): https://oil2-next-827682634474.asia-east1.run.app/
 - Current course materials: https://github.com/Alwin-Lin/mle-star-Bootcamp
 - Vibe Coding Happy Hour curriculum: https://github.com/samlin-ai/vibe-coding-happy-hour
 
