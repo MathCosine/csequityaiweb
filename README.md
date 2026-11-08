@@ -140,8 +140,9 @@ and the DKIM TXT record that Google Admin generates (Apps → Google Workspace �
 Gmail → Authenticate email). `vercel.json` has no effect on any of this.
 
 ## Key links baked in
-- Fall 2026 registration form (announcement bar, homepage course card, key-date box, closing banner, FAQ,
-  Programs page): https://forms.gle/d4iYPMVnYYJ8Zn3h9
+- Fall 2026 registration form (nav button on every page, hero button, announcement bar, course card,
+  key-date box, closing banner, FAQ, Programs page, Contact and 404): https://forms.gle/d4iYPMVnYYJ8Zn3h9.
+  After Nov 14, the "Sign up for Nov 14" button labels need a new target.
 - Learning platform (other sign-up CTAs): https://oil2-next-827682634474.asia-east1.run.app/
 - Current course materials: https://github.com/Alwin-Lin/mle-star-Bootcamp
 - Vibe Coding Happy Hour curriculum: https://github.com/samlin-ai/vibe-coding-happy-hour
