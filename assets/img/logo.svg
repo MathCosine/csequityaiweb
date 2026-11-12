@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 160" role="img" aria-labelledby="t">
+  <title id="t">CS Equity AI</title>
+  <rect width="560" height="160" fill="#ffffff"/>
+  <g transform="translate(20 20)"><rect x="1.5" y="1.5" width="117" height="117" rx="26" fill="#ffffff" stroke="#0d3b4f" stroke-width="3"/>
+  <g stroke="#0d3b4f" stroke-opacity="0.45" stroke-width="2.2" stroke-linecap="round"><path d="M48 20 L28 44"/><path d="M48 20 L78 18"/><path d="M78 18 L90 40"/><path d="M90 40 L102 62"/><path d="M102 62 L92 84"/><path d="M28 44 L16 62"/><path d="M16 62 L24 82"/><path d="M28 44 L60 62"/><path d="M60 62 L92 84"/><path d="M90 40 L60 62"/><path d="M60 62 L24 82"/><path d="M24 82 L42 102"/><path d="M42 102 L92 84"/><path d="M92 84 L82 104"/><path d="M48 20 L60 62"/><path d="M42 102 L60 62"/><path d="M78 18 L60 62"/></g>
+  <g stroke="#1fb89c" stroke-width="8" stroke-linecap="round"><path d="M28 44 L90 40"/><path d="M24 82 L92 84"/></g>
+  <g fill="#ffffff" stroke="#0d3b4f" stroke-width="3.6"><circle cx="28" cy="44" r="6.5"/><circle cx="90" cy="40" r="6.5"/><circle cx="24" cy="82" r="6.5"/><circle cx="92" cy="84" r="6.5"/><circle cx="48" cy="20" r="6.5"/><circle cx="78" cy="18" r="6.5"/><circle cx="102" cy="62" r="6.5"/><circle cx="16" cy="62" r="6.5"/><circle cx="60" cy="62" r="6.5"/><circle cx="42" cy="102" r="6.5"/><circle cx="82" cy="104" r="6.5"/></g></g>
+  <text x="164" y="94" font-family="Fraunces, Georgia, 'Times New Roman', serif" font-size="58" font-weight="600" fill="#0d3b4f" letter-spacing="-1">CS Equity <tspan fill="#1fb89c">AI</tspan></text>
+  <text x="166" y="124" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-size="13.5" font-weight="600" letter-spacing="3.2" fill="#0d3b4f" fill-opacity="0.7">EMPOWERING FUTURE TECH LEADERS</text>
+</svg>
