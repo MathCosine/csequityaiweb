@@ -64,19 +64,16 @@ request goes to Google, which is why the CSP has no font hosts.
   add a new `v<version>/` directory and update the `url()`s and preloads.
 
 ## Logo & icons
-All of these are cut from the round "CS Equity AI — Empowering future tech leaders" logo:
-- `assets/img/logo-mark.png`: the circle with a transparent background, shown at
-  38px beside the wordmark in the nav and footer.
-- `favicon.ico` (16/32/48) and `assets/img/favicon-96.png`: browser tabs and
-  search results. Google shows favicons cropped to a circle, which this logo
-  already is.
-- `assets/img/apple-touch-icon.png`, `icon-192.png`, `icon-512.png`: the circle on
-  its own gradient, full bleed. `icon-512.png` is also the `logo` in the JSON-LD.
-- `assets/img/icon-maskable-512.png`: the circle at 80% on navy, so Android's
-  mask never clips the lettering.
+The mark is an equals sign drawn as a small network: two mint bars linking same-sized
+nodes, inside a rounded square, in navy `#0d3b4f` and mint `#1fb89c`.
+- `assets/img/logo-mark.svg`: the mark alone, shown at 38px beside the wordmark in the
+  nav and footer.
+- `assets/img/logo.svg`: the full lockup (mark, "CS Equity AI", tagline) for use
+  elsewhere.
+- `favicon.ico` (16/32/48), `assets/img/favicon-96.png`, `apple-touch-icon.png`,
+  `icon-192.png`, `icon-512.png` (also the JSON-LD `logo`), and `icon-maskable-512.png`
+  (mark at 78% on white): all rendered from `logo-mark.svg`.
 - `assets/img/og-image.jpg`: the share card, with the mark top-left.
-
-To swap the logo again, regenerate all of these from one square source, so they match.
 
 ## Dates that expire
 Put deadlines in `<time datetime="YYYY-MM-DD">` inside a `[data-deadlines]` block.
