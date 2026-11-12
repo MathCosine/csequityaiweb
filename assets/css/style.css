@@ -1079,3 +1079,31 @@ html:not(.js) .copy { display: none; }   /* nothing to click without JS */
 /* links inside the key-date box read as links */
 .date-cell p a { color: var(--blue); border-bottom: 1px solid #bcd8ec; }
 .date-cell p a:hover { border-color: var(--blue); }
+
+/* ============ micro-animations ============ */
+/* small, hover- or scroll-linked movement only; all of it is off under
+   prefers-reduced-motion */
+.btn .a { display: inline-block; transition: transform 0.25s var(--ease-out); }
+.btn:hover .a { transform: translateX(4px); }
+.arrow-link[target="_blank"]:hover .a { transform: translate(3px, -1px); }
+.event-head .back { display: inline-block; transition: transform 0.25s var(--ease-out); }
+.event-head .back:hover { transform: translateX(-4px); }
+.footer-bottom .top { display: inline-block; transition: transform 0.25s var(--ease-out), color 0.2s; }
+.footer-bottom .top:hover { transform: translateY(-2px); }
+/* course covers lift slightly when their card is hovered */
+.split .card-cover { transition: transform 0.4s var(--ease-out), box-shadow 0.4s ease; }
+.split > div:hover .card-cover { transform: translateY(-4px); box-shadow: 0 18px 30px -24px rgba(20, 40, 60, 0.4); }
+/* diagrams: dashed connectors flow in the direction of their arrow */
+.dg .dashed { animation: dg-flow 1.4s linear infinite; }
+@keyframes dg-flow { to { stroke-dashoffset: -9; } }
+/* archive prev/next: the label slides toward where it leads */
+.evt-nav .k { display: block; transition: transform 0.25s var(--ease-out); }
+.evt-nav a.prev:hover .k { transform: translateX(-4px); }
+.evt-nav a.next:hover .k { transform: translateX(4px); }
+/* level tabs: the active marker eases in */
+.path-sticky .names button.on::after { animation: dot-in 0.3s var(--ease-out); }
+@keyframes dot-in { from { transform: scale(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .dg .dashed, .path-sticky .names button.on::after { animation: none; }
+  .btn .a, .arrow-link .a, .event-head .back, .footer-bottom .top, .split .card-cover, .evt-nav .k { transition: none; transform: none !important; }
+}
