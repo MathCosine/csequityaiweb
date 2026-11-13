@@ -267,6 +267,19 @@
     });
   });
 
+  /* ---------- /bootcamp: show the session time in the visitor's own zone ---------- */
+  document.querySelectorAll("[data-local-time]").forEach(function (el) {
+    try {
+      var start = new Date(el.getAttribute("data-start")), end = new Date(el.getAttribute("data-end"));
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (!tz || tz === "Asia/Taipei") { el.textContent = "That’s your local time."; return; }
+      var day = new Intl.DateTimeFormat(undefined, { weekday: "short", month: "short", day: "numeric" }).format(start);
+      var t = function (x) { return new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(x); };
+      var zone = new Intl.DateTimeFormat(undefined, { timeZoneName: "short" }).formatToParts(start).filter(function (p) { return p.type === "timeZoneName"; })[0];
+      el.textContent = "Your time: " + day + ", " + t(start) + "–" + t(end) + (zone ? " " + zone.value : "");
+    } catch (e) { /* keep the Pacific fallback in the HTML */ }
+  });
+
   /* ---------- hero canvas: drifting contour lines ---------- */
   var canvas = document.getElementById("hero-canvas");
   if (canvas && !reduceMotion) {
