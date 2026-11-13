@@ -1107,3 +1107,34 @@ html:not(.js) .copy { display: none; }   /* nothing to click without JS */
   .dg .dashed, .path-sticky .names button.on::after { animation: none; }
   .btn .a, .arrow-link .a, .event-head .back, .footer-bottom .top, .split .card-cover, .evt-nav .k { transition: none; transform: none !important; }
 }
+
+/* ============ /bootcamp ============ */
+.page-head .bc-when { position: static; margin-top: 0; border: 1px solid var(--hair-2); border-radius: 4px; background: #fff; padding: 24px 26px 20px; }
+.bc-when .tag { margin-bottom: 6px; }
+.bc-when .bc-big { font-family: var(--serif); font-size: 1.55rem; line-height: 1.2; margin-bottom: 2px; }
+.bc-when .bc-local { color: var(--ink-2); font-size: 0.86rem; margin-top: 2px; }
+.page-head .hero-ctas { margin-top: 30px; }
+.bc-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(30px, 6vw, 90px); align-items: center; }
+.bc-steps { list-style: none; display: grid; gap: 22px; }
+.bc-steps li { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start; }
+.bc-steps .n { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--hair-2); background: #fff;
+  display: grid; place-items: center; font-family: var(--serif); font-size: 1.15rem; }
+.bc-steps b { display: block; font-weight: 600; }
+.bc-steps span:not(.n) { color: var(--ink-2); }
+.dg-loop { margin: 0; }
+.dg-loop svg { max-width: 460px; }
+.dg .spoke { stroke: var(--hair-2); stroke-width: 1.25; }
+.bc-agenda .pillar { grid-template-columns: 200px 1fr 1.2fr; }
+.bc-agenda .no time { font-variant-numeric: tabular-nums; font-style: normal; }
+.bc-agenda .key h3 .tag { display: inline-block; margin: 6px 0 0; vertical-align: middle; font-family: var(--sans); }
+.bc-list { list-style: none; margin-top: 10px; }
+.bc-list li { padding: 7px 0; border-bottom: 1px dotted var(--hair-2); color: var(--ink-2); font-size: 0.93rem; }
+.bc-list li:last-child { border-bottom: 0; }
+.bc-weeks { position: static; margin: 0; max-width: 720px; }
+.bc-weeks dl > div { display: grid; grid-template-columns: 110px 1fr; gap: 16px; }
+.split.bc-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 900px) { .split.bc-cards { grid-template-columns: 1fr; } .bc-split { grid-template-columns: 1fr; } .bc-agenda .pillar { grid-template-columns: 1fr; gap: 6px; } }
+@media (max-width: 640px) { .page-head .wrap.has-art .bc-when { display: block; margin-top: 28px; } .bc-weeks dl { display: block !important; } }
+.split p a, .evt p a { color: var(--blue); border-bottom: 1px solid #bcd8ec; }
+.split p a:hover, .evt p a:hover { border-color: var(--blue); }
+.page-head .bc-when dl { display: block !important; }
